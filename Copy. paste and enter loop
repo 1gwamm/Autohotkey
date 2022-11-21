@@ -1,0 +1,19 @@
+;------------------------------------------------------------------------------
+; email copy, pasting and pressing enter loop
+;------------------------------------------------------------------------------
+
+#b::
+Loop, parse, clipboard , "`n"
+ { 
+    ;MsgBox, % A_LoopField
+    send %A_LoopField%
+			if (A_LoopField == ".com") ;can add other domains once working
+				Send {Enter}
+		sleep, 1000          ;delay in ms 
+
+  } 
+return
+
+;------------------------------------------------------------------------------
+; To test, ctrl+C and then windows+B where you want to paste your list one-by-one
+;------------------------------------------------------------------------------
