@@ -1,0 +1,36 @@
+;------------------------------------------------------------------------------
+;computer information
+;------------------------------------------------------------------------------
+:*:myip::
+SendInput %A_IPAddress1%
+Return
+
+:*:mycomp::
+SendInput %A_ComputerName%
+Return
+
+:*:myspec::
+SendInput %ComSpec%
+Return
+
+
+:*:mynetwork::
+dhw := A_DetectHiddenWindows
+DetectHiddenWindows On
+Run "%ComSpec%" /k,, Hide, pid
+while !(hConsole := WinExist("ahk_pid" pid))
+    Sleep 10
+DllCall("AttachConsole", "UInt", pid)
+DetectHiddenWindows %dhw%
+objShell := ComObjCreate("WScript.Shell")
+objExec := objShell.Exec("cmd /c netsh wlan show interface")
+While !objExec.Status
+    Sleep 100
+wlanres := objExec.StdOut.ReadAll()
+DllCall("FreeConsole")
+Process Exist, %pid%
+if (ErrorLevel == pid)
+    Process Close, %pid%
+RegExMatch(wlanres,"\sSSID\s+:\s(.+)",m)
+ssid := m1
+MsgBox % ssid
