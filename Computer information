@@ -13,7 +13,9 @@ Return
 SendInput %ComSpec%
 Return
 
-
+;------------------------------------------------------------------------------
+;computer information this gets the name of the current network the device is on and displays in a popup box
+;------------------------------------------------------------------------------
 :*:mynetwork::
 dhw := A_DetectHiddenWindows
 DetectHiddenWindows On
